@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Чистый воздух — здоровое будущее</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #2e7d32;
+    --green-light: #4caf50;
+    --green-pale: #e8f5e9;
+    --blue: #0277bd;
+    --blue-light: #29b6f6;
+    --blue-pale: #e1f5fe;
+    --gray: #546e7a;
+    --gray-light: #f4f6f7;
+    --white: #ffffff;
+    --smog: #8d9e8a;
+    --dark: #1a2e1a;
+    --accent: #00c853;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--white);
+    color: #2c3e2d;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3 { font-family: 'Playfair Display', serif; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(46,125,50,0.12);
+    padding: 0 5%;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+    transition: box-shadow 0.3s;
+  }
+  nav.scrolled { box-shadow: 0 4px 24px rgba(46,125,50,0.1); }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem; font-weight: 900;
+    color: var(--green);
+    letter-spacing: -0.5px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .nav-logo span { font-size: 1.4rem; }
+  .nav-links {
+    display: flex; gap: 4px; list-style: none;
+    flex-wrap: wrap;
+  }
+  .nav-links a {
+    text-decoration: none; color: var(--gray);
+    font-size: 0.78rem; font-weight: 600; letter-spacing: 0.3px;
+    padding: 6px 10px; border-radius: 20px;
+    transition: all 0.2s;
+  }
+  .nav-links a:hover { background: var(--green-pale); color: var(--green); }
+  .burger {
+    display: none; flex-direction: column; gap: 5px; cursor: pointer;
+    padding: 4px;
+  }
+  .burger span { width: 24px; height: 2px; background: var(--green); border-radius: 2px; transition: 0.3s; }
+
+  /* PAGES */
+  .page { display: none; min-height: 100vh; padding-top: 64px; }
+  .page.active { display: block; animation: fadeIn 0.4s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+
+  /* === PAGE 1: HOME === */
+  .hero {
+    min-height: calc(100vh - 64px);
+    display: grid; grid-template-columns: 1fr 1fr;
+    position: relative; overflow: hidden;
+  }
+  .hero-left {
+    background: linear-gradient(135deg, #4a5568 0%, #718096 30%, #8d9e8a 60%, #b0bec5 100%);
+    position: relative; display: flex; align-items: flex-end; padding: 48px;
+    overflow: hidden;
+  }
+  .hero-right {
+    background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 40%, #43a047 70%, #a5d6a7 100%);
+    position: relative; display: flex; align-items: flex-end; padding: 48px;
+    overflow: hidden;
+  }
+  .smog-overlay {
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(ellipse at 50% 30%, rgba(180,160,100,0.35) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .factory-svg, .tree-svg {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    pointer-events: none;
+  }
+
+  /* City silhouettes via CSS */
+  .city-smog::before {
+    content: '';
+    position: absolute; bottom: 60px; left: 0; right: 0; height: 160px;
+    background:
+      /* chimneys */
+      linear-gradient(to top, #546e7a 0%, #546e7a 80px, transparent 80px) 15% 0 / 18px 80px no-repeat,
+      linear-gradient(to top, #455a64 0%, #455a64 120px, transparent 120px) 28% 0 / 24px 120px no-repeat,
+      linear-gradient(to top, #546e7a 0%, #546e7a 60px, transparent 60px) 50% 0 / 16px 60px no-repeat,
+      linear-gradient(to top, #455a64 0%, #455a64 100px, transparent 100px) 68% 0 / 20px 100px no-repeat,
+      linear-gradient(to top, #37474f 0%, #37474f 140px, transparent 140px) 80% 0 / 30px 140px no-repeat;
+  }
+  .city-smog::after {
+    content: '';
+    position: absolute; top: 20%; left: 0; right: 0; height: 80px;
+    background: radial-gradient(ellipse 60px 30px at 20% 50%, rgba(200,200,180,0.6) 0%, transparent 100%),
+                radial-gradient(ellipse 80px 40px at 50% 50%, rgba(200,200,180,0.5) 0%, transparent 100%),
+                radial-gradient(ellipse 50px 25px at 75% 50%, rgba(200,200,180,0.6) 0%, transparent 100%);
+    pointer-events: none;
+  }
+  .city-clean::before {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0; height: 200px;
+    /* trees */
+    background:
+      radial-gradient(ellipse 30px 40px at 10% 60%, #388e3c 0%, transparent 100%),
+      radial-gradient(ellipse 40px 50px at 25% 55%, #2e7d32 0%, transparent 100%),
+      radial-gradient(ellipse 25px 35px at 40% 65%, #43a047 0%, transparent 100%),
+      radial-gradient(ellipse 50px 60px at 60% 50%, #1b5e20 0%, transparent 100%),
+      radial-gradient(ellipse 35px 45px at 78% 58%, #388e3c 0%, transparent 100%),
+      radial-gradient(ellipse 28px 38px at 92% 62%, #2e7d32 0%, transparent 100%);
+  }
+  .city-clean::after {
+    content: '';
+    position: absolute; top: 15%; left: 30%; width: 60px; height: 60px;
+    background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 100%);
+    border-radius: 50%;
+    box-shadow: 0 0 40px 20px rgba(255,255,255,0.3);
+  }
+
+  .hero-label {
+    position: relative; z-index: 2;
+    color: white;
+    font-family: 'Nunito', sans-serif; font-weight: 600; font-size: 0.85rem;
+    letter-spacing: 1px; text-transform: uppercase;
+    background: rgba(0,0,0,0.25); padding: 6px 14px; border-radius: 20px;
+  }
+  .hero-center {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    z-index: 10; text-align: center; width: 90%;
+  }
+  .hero-title {
+    font-size: clamp(2rem, 5vw, 3.8rem);
+    color: white;
+    text-shadow: 0 4px 24px rgba(0,0,0,0.4);
+    line-height: 1.15;
+    margin-bottom: 28px;
+  }
+  .hero-sub {
+    color: rgba(255,255,255,0.88);
+    font-size: clamp(0.9rem, 2vw, 1.1rem);
+    margin-bottom: 36px;
+    max-width: 480px; margin-left: auto; margin-right: auto;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+  .btn-main {
+    display: inline-block; padding: 16px 40px;
+    background: linear-gradient(135deg, var(--accent), var(--green-light));
+    color: white; font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 1rem;
+    border: none; border-radius: 50px; cursor: pointer;
+    text-decoration: none; letter-spacing: 0.5px;
+    box-shadow: 0 8px 32px rgba(0,200,83,0.4);
+    transition: all 0.3s; position: relative; overflow: hidden;
+  }
+  .btn-main::after {
+    content: ''; position: absolute; inset: 0;
+    background: rgba(255,255,255,0); transition: 0.3s;
+    border-radius: 50px;
+  }
+  .btn-main:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,200,83,0.5); }
+  .btn-main:hover::after { background: rgba(255,255,255,0.1); }
+
+  .stats-row {
+    display: grid; grid-template-columns: repeat(3,1fr);
+    gap: 1px; background: rgba(46,125,50,0.08);
+    border-top: 1px solid rgba(46,125,50,0.08);
+  }
+  .stat-item {
+    background: white; padding: 32px 24px; text-align: center;
+    transition: background 0.2s;
+  }
+  .stat-item:hover { background: var(--green-pale); }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem; font-weight: 900;
+    color: var(--green); line-height: 1;
+  }
+  .stat-desc { font-size: 0.85rem; color: var(--gray); margin-top: 8px; line-height: 1.4; }
+
+  /* === SECTION HEADERS === */
+  .section-header {
+    text-align: center; padding: 72px 5% 48px;
+  }
+  .section-tag {
+    display: inline-block; font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--green); background: var(--green-pale);
+    padding: 5px 14px; border-radius: 20px; margin-bottom: 16px;
+  }
+  .section-title {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    color: var(--dark); line-height: 1.2; margin-bottom: 16px;
+  }
+  .section-desc {
+    font-size: 1rem; color: var(--gray); max-width: 560px; margin: 0 auto;
+    line-height: 1.7;
+  }
+  .divider {
+    width: 60px; height: 3px;
+    background: linear-gradient(90deg, var(--green), var(--blue-light));
+    border-radius: 2px; margin: 20px auto 0;
+  }
+
+  /* === PAGE 2: PROBLEM === */
+  .causes-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px; padding: 0 5% 80px;
+  }
+  .cause-card {
+    background: white; border-radius: 20px; padding: 36px 28px;
+    border: 1px solid rgba(46,125,50,0.1);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.05);
+    transition: all 0.3s; position: relative; overflow: hidden;
+  }
+  .cause-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, var(--green), var(--blue-light));
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .cause-card:hover { transform: translateY(-6px); box-shadow: 0 12px 40px rgba(46,125,50,0.12); }
+  .cause-card:hover::before { opacity: 1; }
+  .cause-icon { font-size: 2.8rem; margin-bottom: 16px; }
+  .cause-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; color: var(--dark); }
+  .cause-text { font-size: 0.9rem; color: var(--gray); line-height: 1.7; }
+  .cause-stat {
+    display: inline-block; margin-top: 16px;
+    font-size: 0.78rem; font-weight: 700; color: var(--green);
+    background: var(--green-pale); padding: 4px 12px; border-radius: 12px;
+  }
+
+  /* infographic bar */
+  .infographic {
+    background: var(--dark); color: white;
+    padding: 64px 5%; margin: 0 0 64px;
+  }
+  .infographic h3 {
+    text-align: center; font-size: 1.6rem; margin-bottom: 40px;
+    color: var(--accent);
+  }
+  .bar-chart { max-width: 700px; margin: 0 auto; }
+  .bar-item { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+  .bar-label { width: 160px; font-size: 0.85rem; color: rgba(255,255,255,0.8); flex-shrink: 0; }
+  .bar-wrap { flex: 1; height: 28px; background: rgba(255,255,255,0.08); border-radius: 14px; overflow: hidden; }
+  .bar-fill {
+    height: 100%; border-radius: 14px;
+    background: linear-gradient(90deg, var(--green-light), var(--blue-light));
+    position: relative; display: flex; align-items: center; padding-right: 12px; justify-content: flex-end;
+    font-size: 0.75rem; font-weight: 700; color: white;
+    animation: growBar 1.5s ease forwards;
+    transform-origin: left;
+  }
+  @keyframes growBar { from { width: 0 !important; } }
+
+  /* === PAGE 3: CONSEQUENCES === */
+  .consequences-split {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 0; min-height: 60vh;
+  }
+  .cons-panel {
+    padding: 64px 5%;
+  }
+  .cons-panel.human { background: #fff3e0; }
+  .cons-panel.nature { background: var(--blue-pale); }
+  .cons-panel h3 { font-size: 1.5rem; margin-bottom: 32px; }
+  .cons-panel.human h3 { color: #e65100; }
+  .cons-panel.nature h3 { color: var(--blue); }
+  .cons-list { list-style: none; }
+  .cons-list li {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 14px 0; border-bottom: 1px solid rgba(0,0,0,0.06);
+    font-size: 0.92rem; line-height: 1.5; color: #444;
+  }
+  .cons-list li:last-child { border-bottom: none; }
+  .cons-emoji { font-size: 1.4rem; flex-shrink: 0; margin-top: 1px; }
+
+  /* donut charts */
+  .charts-row {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 32px; padding: 64px 5%; background: var(--gray-light);
+  }
+  .chart-item { text-align: center; }
+  .donut { width: 120px; height: 120px; margin: 0 auto 16px; position: relative; }
+  .donut svg { transform: rotate(-90deg); }
+  .donut-bg { fill: none; stroke: rgba(46,125,50,0.1); stroke-width: 12; }
+  .donut-fill { fill: none; stroke-width: 12; stroke-linecap: round; transition: stroke-dasharray 1.5s ease; }
+  .donut-text {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 900;
+  }
+  .chart-label { font-size: 0.82rem; color: var(--gray); line-height: 1.4; }
+
+  /* === PAGE 4: WHY CHILDREN === */
+  .why-hero {
+    background: linear-gradient(135deg, var(--dark) 0%, #1e3a1e 60%, #2e5e2e 100%);
+    min-height: 50vh; display: flex; align-items: center; justify-content: center;
+    text-align: center; padding: 80px 5%;
+    position: relative; overflow: hidden;
+  }
+  .why-hero::before {
+    content: '🌍';
+    position: absolute; font-size: 200px; opacity: 0.04;
+    top: 50%; left: 50%; transform: translate(-50%,-50%);
+    pointer-events: none;
+  }
+  .why-hero h2 { color: white; font-size: clamp(1.8rem, 4vw, 3rem); margin-bottom: 24px; line-height: 1.2; }
+  .why-hero p { color: rgba(255,255,255,0.8); font-size: 1.05rem; max-width: 600px; line-height: 1.7; }
+  .why-hero .accent-text { color: var(--accent); }
+
+  .timeline {
+    padding: 64px 5%; max-width: 900px; margin: 0 auto;
+  }
+  .timeline-item {
+    display: flex; gap: 32px; margin-bottom: 48px;
+    align-items: flex-start;
+  }
+  .timeline-year {
+    min-width: 80px; text-align: center;
+    font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 900;
+    color: var(--green); line-height: 1;
+  }
+  .timeline-line {
+    display: flex; flex-direction: column; align-items: center; min-width: 20px;
+  }
+  .timeline-dot {
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--green); flex-shrink: 0; margin-top: 8px;
+  }
+  .timeline-vl {
+    flex: 1; width: 2px; background: linear-gradient(to bottom, var(--green), transparent);
+    min-height: 60px;
+  }
+  .timeline-content h4 { font-size: 1rem; font-weight: 700; margin-bottom: 8px; color: var(--dark); }
+  .timeline-content p { font-size: 0.88rem; color: var(--gray); line-height: 1.6; }
+
+  /* === PAGE 5: SOLUTIONS === */
+  .solutions-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px; padding: 0 5% 80px;
+  }
+  .sol-card {
+    border-radius: 24px; padding: 36px 28px; position: relative; overflow: hidden;
+    cursor: default; transition: transform 0.3s;
+  }
+  .sol-card:hover { transform: translateY(-4px); }
+  .sol-card.green { background: linear-gradient(135deg, #e8f5e9, #c8e6c9); }
+  .sol-card.blue { background: linear-gradient(135deg, #e1f5fe, #b3e5fc); }
+  .sol-card.amber { background: linear-gradient(135deg, #fff8e1, #ffecb3); }
+  .sol-card.teal { background: linear-gradient(135deg, #e0f2f1, #b2dfdb); }
+  .sol-card.purple { background: linear-gradient(135deg, #f3e5f5, #e1bee7); }
+  .sol-card.red { background: linear-gradient(135deg, #fce4ec, #f8bbd0); }
+  .sol-card.indig { background: linear-gradient(135deg, #e8eaf6, #c5cae9); }
+  .sol-icon { font-size: 3rem; margin-bottom: 16px; }
+  .sol-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 10px; color: var(--dark); }
+  .sol-text { font-size: 0.88rem; color: var(--gray); line-height: 1.6; }
+  .sol-badge {
+    position: absolute; top: 16px; right: 16px;
+    font-size: 0.65rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+    background: rgba(255,255,255,0.6); padding: 3px 10px; border-radius: 12px; color: var(--dark);
+  }
+
+  /* === PAGE 6: SCHOOL PROJECT === */
+  .project-hero {
+    background: linear-gradient(120deg, var(--green-pale) 0%, var(--blue-pale) 100%);
+    padding: 72px 5%;
+    text-align: center;
+  }
+  .activities-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px; padding: 0 5% 80px;
+  }
+  .activity-card {
+    background: white; border-radius: 20px; padding: 32px 24px;
+    border: 2px solid transparent; transition: all 0.3s;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.05);
+    text-align: center;
+  }
+  .activity-card:hover { border-color: var(--green-light); transform: translateY(-4px); }
+  .activity-icon { font-size: 2.5rem; margin-bottom: 14px; }
+  .activity-title { font-weight: 700; font-size: 0.95rem; color: var(--dark); margin-bottom: 8px; }
+  .activity-desc { font-size: 0.85rem; color: var(--gray); line-height: 1.6; }
+
+  /* progress indicators */
+  .progress-section {
+    background: var(--dark); padding: 64px 5%; color: white;
+  }
+  .progress-section h3 { text-align: center; color: var(--accent); font-size: 1.5rem; margin-bottom: 40px; }
+  .progress-item { margin-bottom: 24px; }
+  .progress-header { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9rem; }
+  .progress-bar { height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; }
+  .progress-fill {
+    height: 100%; border-radius: 4px;
+    background: linear-gradient(90deg, var(--green-light), var(--accent));
+    transition: width 1.5s ease;
+  }
+
+
+  /* === PAGE 8: CONCLUSION === */
+  .conclusion-hero {
+    min-height: 60vh;
+    background: linear-gradient(135deg, #1a2e1a 0%, #2e4e2e 50%, #1a3a3a 100%);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 80px 5%;
+    position: relative; overflow: hidden;
+  }
+  .conclusion-hero::before {
+    content: '🌿';
+    position: absolute; font-size: 300px; opacity: 0.03;
+    top: 50%; left: 50%; transform: translate(-50%,-50%);
+  }
+  .conclusion-quote {
+    font-family: 'Playfair Display', serif; font-size: clamp(1.6rem, 4vw, 2.8rem);
+    color: white; line-height: 1.3; max-width: 800px; margin-bottom: 32px;
+  }
+  .conclusion-quote em { color: var(--accent); font-style: normal; }
+  .conclusion-sub {
+    color: rgba(255,255,255,0.7); font-size: 1rem; max-width: 500px; line-height: 1.7;
+    margin-bottom: 40px;
+  }
+
+  .pledge-cards {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px; padding: 64px 5% 80px; max-width: 1000px; margin: 0 auto; width: 100%;
+  }
+  .pledge-card {
+    background: var(--green-pale); border-radius: 20px; padding: 28px 20px; text-align: center;
+    border: 2px solid rgba(46,125,50,0.15); transition: all 0.3s;
+  }
+  .pledge-card:hover { background: var(--green); color: white; transform: translateY(-4px); }
+  .pledge-card:hover .pledge-text { color: rgba(255,255,255,0.9); }
+  .pledge-icon { font-size: 2.5rem; margin-bottom: 12px; }
+  .pledge-title { font-weight: 700; font-size: 0.95rem; color: var(--dark); margin-bottom: 8px; }
+  .pledge-card:hover .pledge-title { color: white; }
+  .pledge-text { font-size: 0.82rem; color: var(--gray); line-height: 1.5; }
+
+  .final-banner {
+    background: linear-gradient(135deg, var(--green), var(--blue));
+    padding: 64px 5%; text-align: center; color: white;
+  }
+  .final-banner h2 { font-size: clamp(1.4rem, 3vw, 2rem); margin-bottom: 16px; }
+  .final-banner p { opacity: 0.9; font-size: 0.95rem; line-height: 1.6; max-width: 500px; margin: 0 auto; }
+
+  /* FOOTER */
+  footer {
+    background: var(--dark); color: rgba(255,255,255,0.5);
+    text-align: center; padding: 32px 5%; font-size: 0.8rem; line-height: 1.7;
+  }
+  footer span { color: var(--accent); }
+
+  /* MOBILE NAV */
+  .mobile-menu {
+    display: none; position: fixed; top: 64px; left: 0; right: 0;
+    background: white; padding: 20px 5%; z-index: 999;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    flex-direction: column; gap: 4px;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    text-decoration: none; color: var(--gray); font-weight: 600; font-size: 0.9rem;
+    padding: 10px 16px; border-radius: 12px; transition: all 0.2s;
+  }
+  .mobile-menu a:hover { background: var(--green-pale); color: var(--green); }
+
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .burger { display: flex; }
+    .hero { grid-template-columns: 1fr; grid-template-rows: 1fr; }
+    .hero-left { display: none; }
+    .hero-right {
+      min-height: calc(100vh - 64px);
+      background: linear-gradient(135deg, #1b5e20, #2e7d32, #43a047);
+    }
+    .hero-center { width: 95%; }
+    .stats-row { grid-template-columns: 1fr; }
+    .consequences-split { grid-template-columns: 1fr; }
+    .timeline-item { flex-direction: column; gap: 12px; }
+    .timeline-year { text-align: left; }
+    .pledge-cards { grid-template-columns: 1fr 1fr; }
+    .charts-row { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* scroll reveal */
+  .reveal { opacity: 0; transform: translateY(30px); transition: all 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* BG patterns */
+  .bg-dots {
+    background-image: radial-gradient(rgba(46,125,50,0.08) 1.5px, transparent 1.5px);
+    background-size: 28px 28px;
+  }
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <div class="nav-logo"><span>🌿</span> Чистый воздух</div>
+  <ul class="nav-links">
+    <li><a href="#" onclick="showPage('home')">Главная</a></li>
+    <li><a href="#" onclick="showPage('problem')">Проблема</a></li>
+    <li><a href="#" onclick="showPage('consequences')">Последствия</a></li>
+    <li><a href="#" onclick="showPage('why')">Детям о важном</a></li>
+    <li><a href="#" onclick="showPage('solutions')">Решения</a></li>
+    <li><a href="#" onclick="showPage('project')">Наш проект</a></li>
+    <li><a href="#" onclick="showPage('conclusion')">Вывод</a></li>
+  </ul>
+  <div class="burger" onclick="toggleMobile()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#" onclick="showPage('home');toggleMobile()">🏠 Главная</a>
+  <a href="#" onclick="showPage('problem');toggleMobile()">⚠️ В чём проблема?</a>
+  <a href="#" onclick="showPage('consequences');toggleMobile()">💔 Последствия</a>
+  <a href="#" onclick="showPage('why');toggleMobile()">👦 Детям о важном</a>
+  <a href="#" onclick="showPage('solutions');toggleMobile()">💡 Решения</a>
+  <a href="#" onclick="showPage('project');toggleMobile()">🏫 Наш проект</a>
+  <a href="#" onclick="showPage('conclusion');toggleMobile()">🌟 Вывод</a>
+</div>
+
+<!-- ======================== PAGE 1: HOME ======================== -->
+<div id="page-home" class="page active">
+  <div class="hero">
+    <div class="hero-left city-smog">
+      <div class="smog-overlay"></div>
+      <div class="hero-label">Сегодняшний мир</div>
+    </div>
+    <div class="hero-right city-clean">
+      <div class="hero-label">Мир будущего</div>
+    </div>
+    <div class="hero-center">
+      <h1 class="hero-title">Чистый воздух —<br>здоровое будущее</h1>
+      <p class="hero-sub">Узнай о проблеме загрязнения воздуха, её причинах и о том, как каждый из нас может изменить мир к лучшему.</p>
+      <a href="#" class="btn-main" onclick="showPage('problem')">Узнать больше →</a>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-item reveal">
+      <div class="stat-num">7 млн</div>
+      <div class="stat-desc">человек ежегодно погибают из-за загрязнённого воздуха</div>
+    </div>
+    <div class="stat-item reveal">
+      <div class="stat-num">99%</div>
+      <div class="stat-desc">населения Земли дышат воздухом, не соответствующим нормам ВОЗ</div>
+    </div>
+    <div class="stat-item reveal">
+      <div class="stat-num">2050</div>
+      <div class="stat-desc">год, когда потепление может стать необратимым без действий сейчас</div>
+    </div>
+  </div>
+
+  <div class="section-header reveal">
+    <div class="section-tag">О чём этот сайт</div>
+    <h2 class="section-title">Воздух — это жизнь</h2>
+    <p class="section-desc">Каждый день мы делаем около 23 000 вдохов. Но что именно мы вдыхаем? Этот сайт помогает разобраться в проблеме загрязнения воздуха и найти реальные пути её решения.</p>
+    <div class="divider"></div>
+  </div>
+
+  <div class="causes-grid" style="padding-top:0;">
+    <div class="cause-card reveal" onclick="showPage('problem')" style="cursor:pointer;">
+      <div class="cause-icon">⚠️</div>
+      <div class="cause-title">В чём проблема?</div>
+      <div class="cause-text">Узнай главные источники загрязнения воздуха — от заводов до лесных пожаров.</div>
+    </div>
+    <div class="cause-card reveal" onclick="showPage('consequences')" style="cursor:pointer;">
+      <div class="cause-icon">🌡️</div>
+      <div class="cause-title">Последствия</div>
+      <div class="cause-text">Как загрязнение влияет на здоровье людей и состояние природы.</div>
+    </div>
+    <div class="cause-card reveal" onclick="showPage('solutions')" style="cursor:pointer;">
+      <div class="cause-icon">💡</div>
+      <div class="cause-title">Пути решения</div>
+      <div class="cause-text">Реальные шаги, которые может сделать каждый из нас уже сегодня.</div>
+    </div>
+  </div>
+
+  <footer>
+    Школьный проект · Класс 7Ж · <span>Горлов Савелий Андреевич</span><br>
+    «Чистый воздух — здоровое будущее» · Образовательный сайт
+  </footer>
+</div>
+
+<!-- ======================== PAGE 2: PROBLEM ======================== -->
+<div id="page-problem" class="page">
+  <div class="section-header">
+    <div class="section-tag">В чём проблема</div>
+    <h2 class="section-title">Откуда берётся грязный воздух?</h2>
+    <p class="section-desc">Воздух загрязняется из множества источников. Вот главные из них — и данные о том, насколько каждый опасен.</p>
+    <div class="divider"></div>
+  </div>
+
+  <div class="causes-grid">
+    <div class="cause-card reveal">
+      <div class="cause-icon">🏭</div>
+      <div class="cause-title">Заводы и фабрики</div>
+      <div class="cause-text">Промышленные предприятия выбрасывают оксиды серы, азота и твёрдые частицы PM2.5 — они проникают глубоко в лёгкие. Многие заводы работают круглосуточно без очистных фильтров.</div>
+      <span class="cause-stat">↑ 34% выбросов</span>
+    </div>
+    <div class="cause-card reveal">
+      <div class="cause-icon">🚗</div>
+      <div class="cause-title">Выхлопные газы автомобилей</div>
+      <div class="cause-text">Более 1,4 млрд автомобилей в мире ежедневно сжигают бензин и дизель, выбрасывая CO₂, CO, NOₓ. В городах транспорт — главный источник смога.</div>
+      <span class="cause-stat">↑ 29% выбросов</span>
+    </div>
+    <div class="cause-card reveal">
+      <div class="cause-icon">🔥</div>
+      <div class="cause-title">Сжигание мусора</div>
+      <div class="cause-text">При сжигании отходов в воздух попадают диоксины, фураны и тяжёлые металлы. Один мусоровоз может заменить тысячи костров — но такая практика до сих пор распространена.</div>
+      <span class="cause-stat">↑ 12% выбросов</span>
+    </div>
+    <div class="cause-card reveal">
+      <div class="cause-icon">🪵</div>
+      <div class="cause-title">Вырубка лесов</div>
+      <div class="cause-text">Деревья поглощают CO₂ и выделяют кислород. Уничтожение одного гектара леса лишает атмосферу «природного фильтра». Каждую минуту исчезает около 27 футбольных полей леса.</div>
+      <span class="cause-stat">↓ 15% кислорода</span>
+    </div>
+    <div class="cause-card reveal">
+      <div class="cause-icon">🌲</div>
+      <div class="cause-title">Лесные пожары</div>
+      <div class="cause-text">Пожары выбрасывают огромное количество дыма, сажи и парниковых газов. Крупные пожары (как в Сибири или Австралии) ухудшают качество воздуха на тысячи километров вокруг.</div>
+      <span class="cause-stat">↑ 10% выбросов</span>
+    </div>
+    <div class="cause-card reveal">
+      <div class="cause-icon">⚡</div>
+      <div class="cause-title">Тепловые электростанции</div>
+      <div class="cause-text">Угольные и нефтяные ТЭС — крупнейшие одиночные источники загрязнения. Они производят ртуть, свинец и сернистый газ, отравляя воздух целых регионов.</div>
+      <span class="cause-stat">↑ 20% выбросов</span>
+    </div>
+  </div>
+
+  <div class="infographic reveal">
+    <h3>⚗️ Основные загрязнители воздуха</h3>
+    <div class="bar-chart">
+      <div class="bar-item">
+        <div class="bar-label">PM2.5 (частицы)</div>
+        <div class="bar-wrap"><div class="bar-fill" style="width:88%">88%</div></div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label">Диоксид азота NO₂</div>
+        <div class="bar-wrap"><div class="bar-fill" style="width:73%">73%</div></div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label">Углекислый газ CO₂</div>
+        <div class="bar-wrap"><div class="bar-fill" style="width:95%">95%</div></div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label">Диоксид серы SO₂</div>
+        <div class="bar-wrap"><div class="bar-fill" style="width:61%">61%</div></div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label">Угарный газ CO</div>
+        <div class="bar-wrap"><div class="bar-fill" style="width:55%">55%</div></div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label">Озон O₃</div>
+        <div class="bar-wrap"><div class="bar-fill" style="width:42%">42%</div></div>
+      </div>
+    </div>
+    <p style="text-align:center;margin-top:24px;color:rgba(255,255,255,0.5);font-size:0.8rem;">* Доля городов мира, превышающих норму ВОЗ по данному веществу</p>
+  </div>
+
+  <footer>
+    Школьный проект · Класс 7Ж · <span>Горлов Савелий Андреевич</span>
+  </footer>
+</div>
+
+<!-- ======================== PAGE 3: CONSEQUENCES ======================== -->
+<div id="page-consequences" class="page">
+  <div class="section-header">
+    <div class="section-tag">Последствия</div>
+    <h2 class="section-title">Что происходит, когда мы молчим?</h2>
+    <p class="section-desc">Загрязнение воздуха — это не просто «некрасиво». Оно убивает, разрушает экосистемы и меняет климат всей планеты.</p>
+    <div class="divider"></div>
+  </div>
+
+  <div class="consequences-split reveal">
+    <div class="cons-panel human">
+      <h3>👤 Влияние на человека</h3>
+      <ul class="cons-list">
+        <li><span class="cons-emoji">🫁</span><div><strong>Болезни лёгких</strong> — астма, ХОБЛ, рак лёгких. Частицы PM2.5 проникают прямо в кровоток.</div></li>
+        <li><span class="cons-emoji">❤️</span><div><strong>Болезни сердца</strong> — загрязнённый воздух увеличивает риск инфаркта и инсульта на 30–40%.</div></li>
+        <li><span class="cons-emoji">🤧</span><div><strong>Аллергии</strong> — загрязнение усиливает реакцию на пыльцу, пыль и другие аллергены.</div></li>
+        <li><span class="cons-emoji">🧠</span><div><strong>Вред мозгу</strong> — у детей ухудшается память, снижается IQ при длительном воздействии загрязнённого воздуха.</div></li>
+        <li><span class="cons-emoji">👶</span><div><strong>Вред детям</strong> — особенно уязвимы: у них выше частота дыхания и слабее иммунитет.</div></li>
+        <li><span class="cons-emoji">😴</span><div><strong>Снижение качества жизни</strong> — хроническая усталость, головные боли, снижение работоспособности.</div></li>
+      </ul>
+    </div>
+    <div class="cons-panel nature">
+      <h3>🌍 Влияние на природу</h3>
+      <ul class="cons-list">
+        <li><span class="cons-emoji">🌡️</span><div><strong>Изменение климата</strong> — парниковый эффект ведёт к глобальному потеплению, таянию льдов и подъёму уровня моря.</div></li>
+        <li><span class="cons-emoji">🐋</span><div><strong>Гибель животных</strong> — загрязнение убивает рыб, птиц, морских млекопитающих. Сотни видов под угрозой.</div></li>
+        <li><span class="cons-emoji">🌊</span><div><strong>Загрязнение воды</strong> — кислотные дожди попадают в реки и озёра, уничтожая водные экосистемы.</div></li>
+        <li><span class="cons-emoji">🌱</span><div><strong>Деградация почв</strong> — опасные вещества оседают на землю и делают её непригодной для растений.</div></li>
+        <li><span class="cons-emoji">🌿</span><div><strong>Гибель лесов</strong> — кислотные дожди, смог и потепление уничтожают леса — «лёгкие планеты».</div></li>
+        <li><span class="cons-emoji">🧊</span><div><strong>Таяние льдов</strong> — Арктика теплеет в 4 раза быстрее остальной планеты. Белые медведи на грани исчезновения.</div></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="charts-row reveal">
+    <div class="chart-item">
+      <div class="donut">
+        <svg width="120" height="120" viewBox="0 0 120 120">
+          <circle class="donut-bg" cx="60" cy="60" r="46"/>
+          <circle class="donut-fill" cx="60" cy="60" r="46" stroke="#e53935"
+            stroke-dasharray="254 45" stroke-dashoffset="0"/>
+        </svg>
+        <div class="donut-text" style="color:#e53935">85%</div>
+      </div>
+      <div class="chart-label">городов превышают норму по PM2.5</div>
+    </div>
+    <div class="chart-item">
+      <div class="donut">
+        <svg width="120" height="120" viewBox="0 0 120 120">
+          <circle class="donut-bg" cx="60" cy="60" r="46"/>
+          <circle class="donut-fill" cx="60" cy="60" r="46" stroke="#fb8c00"
+            stroke-dasharray="202 98" stroke-dashoffset="0"/>
+        </svg>
+        <div class="donut-text" style="color:#fb8c00">68%</div>
+      </div>
+      <div class="chart-label">болезней лёгких связаны с загрязнением</div>
+    </div>
+    <div class="chart-item">
+      <div class="donut">
+        <svg width="120" height="120" viewBox="0 0 120 120">
+          <circle class="donut-bg" cx="60" cy="60" r="46"/>
+          <circle class="donut-fill" cx="60" cy="60" r="46" stroke="#0277bd"
+            stroke-dasharray="173 126" stroke-dashoffset="0"/>
+        </svg>
+        <div class="donut-text" style="color:#0277bd">58%</div>
+      </div>
+      <div class="chart-label">рек в мире загрязнены из-за кислотных осадков</div>
+    </div>
+    <div class="chart-item">
+      <div class="donut">
+        <svg width="120" height="120" viewBox="0 0 120 120">
+          <circle class="donut-bg" cx="60" cy="60" r="46"/>
+          <circle class="donut-fill" cx="60" cy="60" r="46" stroke="#2e7d32"
+            stroke-dasharray="280 9" stroke-dashoffset="0"/>
+        </svg>
+        <div class="donut-text" style="color:#2e7d32">94%</div>
+      </div>
+      <div class="chart-label">населения Земли дышат грязным воздухом</div>
+    </div>
+  </div>
+
+  <footer>Школьный проект · Класс 7Ж · <span>Андреевич Савелий Горлов</span></footer>
+</div>
+
+<!-- ======================== PAGE 4: WHY CHILDREN ======================== -->
+<div id="page-why" class="page">
+  <div class="why-hero reveal">
+    <div>
+      <h2>Почему это важно<br><em>именно тебе?</em></h2>
+      <p style="margin-top:20px;">Взрослые, принимающие решения сегодня, не доживут до самых тяжёлых последствий. А ты — доживёшь. Именно ты будешь жить в мире 2050, 2070, 2100 года.</p>
+    </div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-tag">Будущее — в твоих руках</div>
+    <h2 class="section-title">Что будет, если ничего не делать?</h2>
+    <p class="section-desc">Посмотри, как развиваются события, если мы продолжаем игнорировать проблему.</p>
+    <div class="divider"></div>
+  </div>
+
+  <div class="timeline">
+    <div class="timeline-item reveal">
+      <div class="timeline-year">2030</div>
+      <div class="timeline-line"><div class="timeline-dot"></div><div class="timeline-vl"></div></div>
+      <div class="timeline-content">
+        <h4>🌡️ +1,5°C к средней температуре Земли</h4>
+        <p>Участятся экстремальные погодные явления — наводнения, засухи, волны жары. Под угрозой окажутся урожаи продовольствия в десятках стран.</p>
+      </div>
+    </div>
+    <div class="timeline-item reveal">
+      <div class="timeline-year">2040</div>
+      <div class="timeline-line"><div class="timeline-dot" style="background:var(--blue)"></div><div class="timeline-vl" style="background:linear-gradient(to bottom,var(--blue),transparent)"></div></div>
+      <div class="timeline-content">
+        <h4>🌊 Подъём уровня моря на 0,3–0,5 м</h4>
+        <p>Прибрежные города окажутся под угрозой затопления. Сотни миллионов людей могут быть вынуждены мигрировать в глубь континентов.</p>
+      </div>
+    </div>
+    <div class="timeline-item reveal">
+      <div class="timeline-year">2050</div>
+      <div class="timeline-line"><div class="timeline-dot" style="background:#e53935"></div><div class="timeline-vl" style="background:linear-gradient(to bottom,#e53935,transparent)"></div></div>
+      <div class="timeline-content">
+        <h4>💀 До 1 млн видов под угрозой исчезновения</h4>
+        <p>Исчезновение видов — необратимо. Разрушение экосистем ударит по сельскому хозяйству, чистоте воды и здоровью людей.</p>
+      </div>
+    </div>
+    <div class="timeline-item reveal">
+      <div class="timeline-year">2070</div>
+      <div class="timeline-line"><div class="timeline-dot" style="background:#f57f17"></div></div>
+      <div class="timeline-content">
+        <h4>🌋 Точка невозврата?</h4>
+        <p>Многие учёные называют 2050–2070 годы критическим горизонтом: после него некоторые процессы могут стать необратимыми. Ты будешь жить именно в это время.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="infographic reveal" style="border-radius:0;">
+    <h3>💬 Что говорят учёные</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;max-width:900px;margin:0 auto;">
+      <div style="background:rgba(255,255,255,0.05);border-radius:16px;padding:28px;">
+        <div style="font-size:2rem;margin-bottom:12px;">🔬</div>
+        <p style="color:rgba(255,255,255,0.85);font-size:0.9rem;line-height:1.7;">«Загрязнение воздуха — крупнейший экологический риск для здоровья в Европе. Оно сокращает жизнь европейца в среднем на 2,2 года.»</p>
+        <div style="margin-top:12px;font-size:0.75rem;color:rgba(255,255,255,0.4);">— Европейское агентство по окружающей среде</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.05);border-radius:16px;padding:28px;">
+        <div style="font-size:2rem;margin-bottom:12px;">🌍</div>
+        <p style="color:rgba(255,255,255,0.85);font-size:0.9rem;line-height:1.7;">«Нынешнее поколение детей и молодёжи — последнее, которое может предотвратить катастрофические изменения климата.»</p>
+        <div style="margin-top:12px;font-size:0.75rem;color:rgba(255,255,255,0.4);">— ЮНИСЕФ, доклад 2021 года</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>Школьный проект · Класс 7Ж · <span>Горлов Савелий Андреевич</span></footer>
+</div>
+
+<!-- ======================== PAGE 5: SOLUTIONS ======================== -->
+<div id="page-solutions" class="page">
+  <div class="section-header">
+    <div class="section-tag">Пути решения</div>
+    <h2 class="section-title">Что мы можем сделать?</h2>
+    <p class="section-desc">Решение есть — и оно складывается из действий каждого. Вот реальные шаги, доступные каждому человеку прямо сейчас.</p>
+    <div class="divider"></div>
+  </div>
+
+  <div class="solutions-grid">
+    <div class="sol-card green reveal">
+      <div class="sol-badge">Природа</div>
+      <div class="sol-icon">🌳</div>
+      <div class="sol-title">Посадка деревьев</div>
+      <div class="sol-text">Одно дерево поглощает 22 кг CO₂ в год и выделяет кислород для двух человек. Участвуй в акциях озеленения, высади дерево во дворе или на даче.</div>
+    </div>
+    <div class="sol-card blue reveal">
+      <div class="sol-badge">Транспорт</div>
+      <div class="sol-icon">🚴</div>
+      <div class="sol-title">Велосипеды вместо машин</div>
+      <div class="sol-text">Велосипед не выделяет выбросов. 3 км на велосипеде вместо машины экономит 0,7 кг CO₂. Ходи пешком или езди на велосипеде — это ещё и полезно для здоровья!</div>
+    </div>
+    <div class="sol-card amber reveal">
+      <div class="sol-badge">Отходы</div>
+      <div class="sol-icon">♻️</div>
+      <div class="sol-title">Сортировка и переработка</div>
+      <div class="sol-text">Раздельный сбор мусора позволяет переработать бумагу, пластик, стекло и металл. Это снижает количество мусора на свалках и уменьшает выбросы метана.</div>
+    </div>
+    <div class="sol-card teal reveal">
+      <div class="sol-badge">Энергия</div>
+      <div class="sol-icon">💡</div>
+      <div class="sol-title">Экономия энергии</div>
+      <div class="sol-text">Выключай свет, когда уходишь. Используй энергосберегающие лампы. Не оставляй зарядки в розетке. Каждый сэкономленный кВт·ч = меньше сожжённого угля на ТЭС.</div>
+    </div>
+    <div class="sol-card purple reveal">
+      <div class="sol-badge">Общество</div>
+      <div class="sol-icon">📢</div>
+      <div class="sol-title">Экологические акции</div>
+      <div class="sol-text">Субботники, флешмобы, петиции — это работает. Участвуй в школьных экоакциях, рассказывай друзьям о проблеме. Общественное давление меняет законы и поведение компаний.</div>
+    </div>
+    <div class="sol-card red reveal">
+      <div class="sol-badge">Питание</div>
+      <div class="sol-icon">🥦</div>
+      <div class="sol-title">Меньше мяса, больше овощей</div>
+      <div class="sol-text">Производство говядины генерирует в 60 раз больше парниковых газов, чем производство гороха. Даже один «вегетарианский день» в неделю имеет значение.</div>
+    </div>
+    <div class="sol-card indig reveal">
+      <div class="sol-badge">Технологии</div>
+      <div class="sol-icon">🤖</div>
+      <div class="sol-title">ИИ в помощь экологии</div>
+      <div class="sol-text">Искусственный интеллект помогает оптимизировать маршруты транспорта, прогнозировать лесные пожары, контролировать выбросы и разрабатывать новые материалы для очистки воздуха.</div>
+    </div>
+  </div>
+
+  <div class="infographic reveal">
+    <h3>📊 Эффект от действий</h3>
+    <div class="bar-chart">
+      <div class="bar-item">
+        <div class="bar-label">Переход на ВИЭ</div>
+        <div class="bar-wrap"><div class="bar-fill" style="width:90%">−90% CO₂</div></div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label">Электротранспорт</div>
+        <div class="bar-wrap"><div class="bar-fill" style="width:70%">−70% NOₓ</div></div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label">Переработка мусора</div>
+        <div class="bar-wrap"><div class="bar-fill" style="width:55%">−55% метана</div></div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label">Озеленение городов</div>
+        <div class="bar-wrap"><div class="bar-fill" style="width:40%">−40% PM2.5</div></div>
+      </div>
+    </div>
+  </div>
+
+  <footer>Школьный проект · Класс 7Ж · <span>Горлов Савелий Андреевич</span></footer>
+</div>
+
+<!-- ======================== PAGE 6: SCHOOL PROJECT ======================== -->
+<div id="page-project" class="page">
+  <div class="project-hero reveal">
+    <div class="section-tag">Наш вклад</div>
+    <h2 class="section-title" style="margin-top:12px;">Наш школьный проект</h2>
+    <p class="section-desc">Класс 7Ж взялся за дело. Мы не просто учим — мы действуем!</p>
+    <div class="divider"></div>
+  </div>
+
+  <div class="activities-grid">
+    <div class="activity-card reveal">
+      <div class="activity-icon">🎨</div>
+      <div class="activity-title">Плакаты и постеры</div>
+      <div class="activity-desc">Ученики создают информационные плакаты о загрязнении воздуха. Лучшие работы украсят стены школы.</div>
+    </div>
+    <div class="activity-card reveal">
+      <div class="activity-icon">📊</div>
+      <div class="activity-title">Презентации</div>
+      <div class="activity-desc">Мы изучаем данные, строим графики и рассказываем одноклассникам и родителям о проблеме загрязнения.</div>
+    </div>
+    <div class="activity-card reveal">
+      <div class="activity-icon">🤖</div>
+      <div class="activity-title">Использование ИИ</div>
+      <div class="activity-desc">Работаем с нейросетями для сбора информации, создания иллюстраций и анализа экологических данных.</div>
+    </div>
+    <div class="activity-card reveal">
+      <div class="activity-icon">🌿</div>
+      <div class="activity-title">Субботники</div>
+      <div class="activity-desc">Выходим убирать территорию школы и двора. Чисто вокруг — значит чище и воздух!</div>
+    </div>
+    <div class="activity-card reveal">
+      <div class="activity-icon">🖼️</div>
+      <div class="activity-title">Выставки работ</div>
+      <div class="activity-desc">Организуем выставку рисунков, поделок и исследований. Приглашаем других учеников и учителей.</div>
+    </div>
+    <div class="activity-card reveal">
+      <div class="activity-icon">🌐</div>
+      <div class="activity-title">Этот сайт</div>
+      <div class="activity-desc">Создание образовательного сайта — тоже часть проекта. Мы используем технологии, чтобы рассказать о важном.</div>
+    </div>
+    <div class="activity-card reveal">
+      <div class="activity-icon">📰</div>
+      <div class="activity-title">Школьная газета</div>
+      <div class="activity-desc">Публикуем статьи об экологии, интервью с учителями биологии и химии, советы по экологичному образу жизни.</div>
+    </div>
+    <div class="activity-card reveal">
+      <div class="activity-icon">🌱</div>
+      <div class="activity-title">Зелёный уголок</div>
+      <div class="activity-desc">Выращиваем растения в классе — живые «фильтры» воздуха. Фикус, хлорофитум и алоэ очищают воздух от токсинов.</div>
+    </div>
+  </div>
+
+  <div class="progress-section reveal">
+    <h3>📈 Прогресс нашего проекта</h3>
+    <div style="max-width:600px;margin:0 auto;">
+      <div class="progress-item">
+        <div class="progress-header"><span>Создание плакатов</span><span style="color:var(--accent)">100%</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+      </div>
+      <div class="progress-item">
+        <div class="progress-header"><span>Разработка сайта</span><span style="color:var(--accent)">100%</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+      </div>
+      <div class="progress-item">
+        <div class="progress-header"><span>Субботники</span><span style="color:var(--accent)">75%</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:75%"></div></div>
+      </div>
+      <div class="progress-item">
+        <div class="progress-header"><span>Выставка работ</span><span style="color:var(--accent)">60%</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:60%"></div></div>
+      </div>
+      <div class="progress-item">
+        <div class="progress-header"><span>Публикации в газете</span><span style="color:var(--accent)">80%</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:80%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <footer>Школьный проект · Класс 7Ж · <span>Горлов Савелий Андреевич</span></footer>
+</div>
+
+<!-- ======================== PAGE 8: CONCLUSION ======================== -->
+<div id="page-conclusion" class="page">
+  <div class="conclusion-hero">
+    <div style="position:relative;z-index:2;">
+      <div class="section-tag" style="background:rgba(0,200,83,0.2);color:var(--accent);">Вывод</div>
+      <div class="conclusion-quote" style="margin-top:20px;">
+        «Чистый воздух зависит<br>от <em>каждого из нас</em>»
+      </div>
+      <p class="conclusion-sub">Проблема загрязнения воздуха — не чья-то чужая проблема. Это наша общая ответственность. И решение тоже общее.</p>
+      <a href="#" class="btn-main" onclick="showPage('solutions')">Как помочь планете →</a>
+    </div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-tag">Обещание</div>
+    <h2 class="section-title">Я обещаю делать...</h2>
+    <p class="section-desc">Маленькие привычки, умноженные на миллиарды людей — это глобальные изменения. Вот что могу сделать я.</p>
+    <div class="divider"></div>
+  </div>
+
+  <div class="pledge-cards">
+    <div class="pledge-card reveal">
+      <div class="pledge-icon">🚶</div>
+      <div class="pledge-title">Ходить пешком</div>
+      <div class="pledge-text">Чаще ходить пешком и ездить на велосипеде вместо поездок на машине.</div>
+    </div>
+    <div class="pledge-card reveal">
+      <div class="pledge-icon">💡</div>
+      <div class="pledge-title">Экономить свет</div>
+      <div class="pledge-text">Выключать свет и технику, когда они не нужны.</div>
+    </div>
+    <div class="pledge-card reveal">
+      <div class="pledge-icon">♻️</div>
+      <div class="pledge-title">Сортировать мусор</div>
+      <div class="pledge-text">Разделять отходы — бумагу, пластик, стекло и органику.</div>
+    </div>
+    <div class="pledge-card reveal">
+      <div class="pledge-icon">🌱</div>
+      <div class="pledge-title">Сажать растения</div>
+      <div class="pledge-text">Участвовать в озеленении и выращивать растения дома.</div>
+    </div>
+    <div class="pledge-card reveal">
+      <div class="pledge-icon">📢</div>
+      <div class="pledge-title">Рассказывать другим</div>
+      <div class="pledge-text">Говорить с друзьями и семьёй об экологии и важности чистого воздуха.</div>
+    </div>
+    <div class="pledge-card reveal">
+      <div class="pledge-icon">🧹</div>
+      <div class="pledge-title">Убирать мусор</div>
+      <div class="pledge-text">Участвовать в субботниках и не мусорить в общественных местах.</div>
+    </div>
+  </div>
+
+  <div class="final-banner reveal">
+    <h2>🌿 Спасибо, что узнал больше!</h2>
+    <p>Этот сайт создан учеником класса 7Ж как часть школьного проекта «Чистый воздух — здоровое будущее». Вместе мы можем изменить мир!</p>
+    <div style="margin-top:28px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+      <a href="#" class="btn-main" onclick="showPage('home')" style="background:rgba(255,255,255,0.2);backdrop-filter:blur(8px);box-shadow:none;">На главную</a>
+      <a href="#" class="btn-main" onclick="showPage('problem')">Изучить проблему →</a>
+    </div>
+  </div>
+
+  <footer>
+    Школьный проект · Класс 7Ж · <span>Горлов Савелий Андреевич</span><br>
+    «Чистый воздух — здоровое будущее» · 2025
+  </footer>
+</div>
+
+<script>
+  // Page navigation
+  function showPage(name) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + name).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(observeReveal, 100);
+  }
+
+  // Mobile menu
+  function toggleMobile() {
+    document.getElementById('mobileMenu').classList.toggle('open');
+  }
+
+  // Navbar scroll
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 10);
+  });
+
+  // Scroll reveal
+  function observeReveal() {
+    const items = document.querySelectorAll('.reveal:not(.visible)');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.classList.add('visible');
+          }, i * 80);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    items.forEach(el => observer.observe(el));
+  }
+
+  // Init
+  document.addEventListener('DOMContentLoaded', () => {
+    observeReveal();
+    // trigger for all visible items on load
+    setTimeout(observeReveal, 200);
+  });
+
+  // Re-observe when page changes
+  observeReveal();
+</script>
+</body>
+</html>
